@@ -2,7 +2,7 @@
 let inMemoryStore = {};
 
 const getHealth = (req, res) => {
-    res.status(200).json({ status: 'UP' });
+    res.status(200).json({ status: 'ok' });
 };
 
 const getTest = (req, res) => {
