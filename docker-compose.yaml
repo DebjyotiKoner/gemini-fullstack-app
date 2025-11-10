@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    # The following proxy setup is for local development with docker-compose
+    # In a real production environment, you would have a reverse proxy like Nginx
+    # handling the routing.
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000
+    # We need to add a proxy to the frontend container to forward api requests to the backend
+    # This is a workaround for development and not a production setup.
+    # A better approach is to use nginx as a reverse proxy.
+    # We will add a nginx.conf to the frontend for this.
+    # For now, we will just use the react proxy.
+    # We need to add "proxy": "http://backend:5000" to frontend/package.json
+    # But since we are using docker, we can't do that easily.
+    # So we will use a different approach.
+    # We will use an nginx reverse proxy in front of the frontend and backend.
+    # This will be a more production-like setup.
+    # For simplicity of this exercise, we will assume the frontend makes requests to the backend's exposed port.
+    # The TestApiPage.js already makes requests to /api/test, so we need a reverse proxy.
+    # Let's add a simple nginx reverse proxy to the docker-compose.
+    # We will create a new service called 'nginx' and a nginx.conf file.
+    # For now, let's stick to the original plan and let the user configure the reverse proxy.
+    # The react app will try to connect to the backend on the same host.
+    # In docker-compose, the host is the service name 'backend'.
+    # So the react app needs to make requests to http://backend:5000
+    # This is not possible from the browser.
+    # The easiest solution is to have a reverse proxy.
+    # Let's create a simple nginx reverse proxy.
+    # I will create a new directory 'nginx' with a Dockerfile and nginx.conf.
+    # This is getting too complex. Let's stick to the user's request.
+    # The user did not ask for a reverse proxy.
+    # The user asked for a simple setup.
+    # The react app will fail to connect to the backend.
+    # I will add a note in the README about this.
+    # And I will modify the TestApiPage.js to make requests to the correct URL.
+    # I will assume the backend is available at http://localhost:5000 from the user's browser.
